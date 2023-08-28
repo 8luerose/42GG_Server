@@ -5,10 +5,7 @@ import com.gg.server.domain.season.data.Season;
 import com.gg.server.domain.tier.data.Tier;
 import com.gg.server.domain.user.data.User;
 import com.gg.server.global.utils.BaseTimeEntity;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
@@ -36,6 +33,7 @@ public class Rank extends BaseTimeEntity implements Serializable {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "tier_id")
+    @Setter
     private Tier tier;
 
     @NotNull

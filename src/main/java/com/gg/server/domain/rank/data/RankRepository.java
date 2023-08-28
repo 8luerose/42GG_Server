@@ -22,4 +22,10 @@ public interface RankRepository extends JpaRepository<Rank, Long> {
 
     @EntityGraph(attributePaths = {"user"})
     List<Rank> findAllBySeasonId(Long seasonId);
+
+    List<Rank> findTop3BySeasonIdOrderByPppDesc(Long seasonId);
+
+    List<Rank> findAllBySeasonIdOrderByPppDesc(Long seasonId);
+
+    Integer countAllBySeasonId(Long seasonId);
 }

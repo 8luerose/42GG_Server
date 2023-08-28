@@ -18,6 +18,7 @@ import com.gg.server.domain.season.data.Season;
 import com.gg.server.domain.team.data.TeamUser;
 import com.gg.server.domain.team.data.TeamUserRepository;
 import com.gg.server.domain.team.exception.TeamIdNotMatchException;
+import com.gg.server.domain.tier.service.TierService;
 import com.gg.server.global.exception.ErrorCode;
 import com.gg.server.global.exception.custom.InvalidParameterException;
 import com.gg.server.global.utils.ExpLevelCalculator;
@@ -40,6 +41,7 @@ public class GameService {
     private final PChangeRepository pChangeRepository;
     private final GameFindService gameFindService;
     private final UserCoinChangeService userCoinChangeService;
+    private final TierService tierService;
 
     @Transactional(readOnly = true)
     public GameTeamInfo getUserGameInfo(Long gameId, Long userId) {
@@ -180,6 +182,8 @@ public class GameService {
                 setTeamScore(enemyTeam, scoreDto.getEnemyTeamScore(), scoreDto.getMyTeamScore() < scoreDto.getEnemyTeamScore());
                 expUpdates(game, teams);
                 rankRedisService.updateRankRedis(myTeam, enemyTeam, game);
+                tierService.updateAllTier();
+                //tier
             } else {
                 // score 가 이미 입력됨
                 return false;
