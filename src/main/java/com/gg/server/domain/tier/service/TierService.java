@@ -21,8 +21,8 @@ public class TierService {
     private final SeasonFindService seasonFindService;
 
     public void updateAllTier() {
-//        Season season = seasonFindService.findCurrentSeason(LocalDateTime.now());
-        Season season = seasonFindService.findSeasonById(1L);
+        Season season = seasonFindService.findCurrentSeason(LocalDateTime.now());
+//        Season season = seasonFindService.findSeasonById(1L);
         List<Rank> rankList = rankRepository.findAllBySeasonIdOrderByPppDesc(season.getId());
         Integer totalNumber = rankRepository.countAllBySeasonId(season.getId());
         List<Tier> tierList = tierRepository.findAll();
