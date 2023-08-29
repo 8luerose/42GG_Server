@@ -20,7 +20,7 @@ public interface RankRepository extends JpaRepository<Rank, Long> {
 
     Optional<Rank> findFirstByOrderByCreatedAtDesc();
 
-    @EntityGraph(attributePaths = {"user"})
+    @EntityGraph(attributePaths = {"user", "tier"})
     List<Rank> findAllBySeasonId(Long seasonId);
 
     List<Rank> findTop3BySeasonIdOrderByPppDesc(Long seasonId);

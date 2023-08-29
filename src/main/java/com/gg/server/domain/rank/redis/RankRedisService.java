@@ -7,6 +7,8 @@ import com.gg.server.domain.rank.data.Rank;
 import com.gg.server.domain.rank.data.RankRepository;
 import com.gg.server.domain.rank.exception.RankNotFoundException;
 import com.gg.server.domain.team.data.TeamUser;
+import com.gg.server.domain.tier.data.Tier;
+import com.gg.server.domain.tier.data.TierRepository;
 import com.gg.server.global.exception.ErrorCode;
 import com.gg.server.global.exception.custom.NotExistException;
 import com.gg.server.global.utils.EloRating;
@@ -22,6 +24,7 @@ import java.util.List;
 @Slf4j
 public class RankRedisService {
     private final RankRedisRepository rankRedisRepository;
+    private final TierRepository tierRepository;
     private final PChangeService pChangeService;
     private final RankRepository rankRepository;
 
@@ -60,9 +63,15 @@ public class RankRedisService {
                 .orElseThrow(() -> new NotExistException("rank 정보가 없습니다.", ErrorCode.NOT_FOUND));
         Integer changedPpp = EloRating.pppChange(myPPP, enemyPPP,
                 teamuser.getTeam().getWin(), Math.abs(teamuser.getTeam().getScore() - enemyScore) == 2);
+        List<Rank> rankList = rankRepository.findAllBySeasonIdOrderByPppDesc(seasonId);
+        List<Tier> tierList = tierRepository.findAll();
+        Integer totalNumber = rankRepository.countAllBySeasonId(seasonId);
+        int top10percentPpp = rankList.get((int) (totalNumber * 0.1)).getPpp();
+        int top5percentPpp = rankList.get((int) (totalNumber * 0.05)).getPpp();
         rank.modifyUserRank(rank.getPpp() + changedPpp, win, losses);
+
         myTeam.updateRank(changedPpp,
-                win, losses);
+                win, losses, top10percentPpp, top5percentPpp, tierList);
     }
 
     public void rollbackRank(TeamUser teamUser, int ppp, Long seasonId) {

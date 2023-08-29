@@ -31,9 +31,9 @@ public class Rank extends BaseTimeEntity implements Serializable {
     @JoinColumn(name = "season_id")
     private Season season;
 
+    @NotNull
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "tier_id")
-    @Setter
     private Tier tier;
 
     @NotNull
@@ -89,5 +89,9 @@ public class Rank extends BaseTimeEntity implements Serializable {
         this.ppp = ppp;
         this.wins = wins;
         this.losses = losses;
+    }
+
+    public void updateTier(Tier tier) {
+        this.tier = tier;
     }
 }

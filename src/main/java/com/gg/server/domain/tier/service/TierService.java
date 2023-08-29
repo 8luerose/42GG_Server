@@ -26,24 +26,24 @@ public class TierService {
         Integer totalNumber = rankRepository.countAllBySeasonId(season.getId());
         List<Tier> tierList = tierRepository.findAll();
 
-        int cnt = 0;
+        // 1, 2, 3등 무지개
         int top10percentPpp = rankList.get((int) (totalNumber * 0.1)).getPpp();
         int top5percentPpp = rankList.get((int) (totalNumber * 0.05)).getPpp();
         for (Rank rank : rankList) {
             if (rank.getPpp() < 980) {
-                rank.setTier(tierList.get(0));
+                rank.updateTier(tierList.get(0));
             } else if (rank.getPpp() < 1020) {
-                rank.setTier(tierList.get(1));
+                rank.updateTier(tierList.get(1));
             } else if (rank.getPpp() < 1060) {
-                rank.setTier(tierList.get(2));
+                rank.updateTier(tierList.get(2));
             } else if (rank.getPpp() < 1100) {
-                rank.setTier(tierList.get(3));
+                rank.updateTier(tierList.get(3));
             } else if (rank.getPpp() > top10percentPpp && rank.getPpp() > 1100) {
-                rank.setTier(tierList.get(4));
+                rank.updateTier(tierList.get(4));
             } else if (rank.getPpp() > top5percentPpp && rank.getPpp() > 1100) {
-                rank.setTier(tierList.get(5));
+                rank.updateTier(tierList.get(5));
             } else {
-                rank.setTier(tierList.get(4));
+                rank.updateTier(tierList.get(4));
             }
         }
     }

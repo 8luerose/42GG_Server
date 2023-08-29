@@ -190,7 +190,7 @@ public class TestDataUtils {
         String zSetKey = RedisKeyManager.getZSetKey(season.getId());
         String hashKey = RedisKeyManager.getHashKey(season.getId());
         redisRepository.addRankData(hashKey, newUser.getId(),
-                new RankRedis(newUser.getId(), "aa", season.getStartPpp(), 0, 0, statusMessage));
+                new RankRedis(newUser.getId(), "aa", season.getStartPpp(), 0, 0, statusMessage, "image"));
         Rank userRank = Rank.builder()
                         .user(newUser)
                         .season(season)
@@ -208,7 +208,7 @@ public class TestDataUtils {
         String zSetKey = RedisKeyManager.getZSetKey(season.getId());
         String hashKey = RedisKeyManager.getHashKey(season.getId());
         redisRepository.addRankData(hashKey, newUser.getId(),
-                new RankRedis(newUser.getId(), "aa", season.getStartPpp(), 0, 0, statusMessage));
+                new RankRedis(newUser.getId(), "aa", season.getStartPpp(), 0, 0, statusMessage, "image"));
         Rank userRank = Rank.builder()
                 .user(newUser)
                 .season(season)
@@ -226,7 +226,7 @@ public class TestDataUtils {
         String hashKey = RedisKeyManager.getHashKey(season.getId());
         redisRepository.addToZSet(zSetKey, newUser.getId(), ppp);
         redisRepository.addRankData(hashKey, newUser.getId(),
-                new RankRedis(newUser.getId(), "aa", ppp, 1, 0, statusMessage));
+                new RankRedis(newUser.getId(), "aa", ppp, 1, 0, statusMessage, "image"));
         Rank userRank = Rank.builder()
                 .user(newUser)
                 .season(season)
