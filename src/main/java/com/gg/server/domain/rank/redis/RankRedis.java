@@ -1,13 +1,11 @@
 package com.gg.server.domain.rank.redis;
 
-import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.gg.server.domain.rank.data.Rank;
 import com.gg.server.domain.tier.data.Tier;
 import com.gg.server.domain.user.dto.UserDto;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
-import lombok.NoArgsConstructor;
 import org.springframework.data.redis.core.RedisHash;
 
 import java.io.Serializable;

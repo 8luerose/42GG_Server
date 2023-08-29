@@ -1,7 +1,6 @@
 package com.gg.server.domain.rank.redis;
 
 import com.gg.server.domain.game.data.Game;
-import com.gg.server.domain.game.service.GameService;
 import com.gg.server.domain.pchange.service.PChangeService;
 import com.gg.server.domain.rank.data.Rank;
 import com.gg.server.domain.rank.data.RankRepository;

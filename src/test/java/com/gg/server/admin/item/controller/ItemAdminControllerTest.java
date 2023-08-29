@@ -76,7 +76,7 @@ class ItemAdminControllerTest {
     }
 
     @Test
-    @DisplayName("PUT /pingpong/admin/items/history/{itemId}")
+    @DisplayName("POST /pingpong/admin/items/history/{itemId}")
     public void updateItemTest() throws Exception {
         String accessToken = testDataUtils.getAdminLoginAccessToken();
         Long userId = tokenProvider.getUserIdFromAccessToken(accessToken);
