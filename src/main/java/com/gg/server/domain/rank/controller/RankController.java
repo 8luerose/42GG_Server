@@ -11,10 +11,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 
@@ -42,7 +39,7 @@ public class RankController {
      */
     @GetMapping("/ranks/{gameType}")
     public RankPageResponseDto getRankPage(@Valid PageRequestDto pageRequestDto, @Parameter(hidden = true) @Login UserDto user,
-                                           Long season,  String gameType){
+                                           Long season,  @PathVariable String gameType){
         PageRequest pageRequest = PageRequest.of(pageRequestDto.getPage() - 1, pageRequestDto.getSize());
         return rankService.getRankPage(pageRequest, user, season);
     }

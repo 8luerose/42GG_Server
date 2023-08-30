@@ -88,23 +88,23 @@ public class GlobalExceptionHandler {
         return new ResponseEntity<>(response, HttpStatus.INTERNAL_SERVER_ERROR);
     }
 
-    @ExceptionHandler({RuntimeException.class})
-    public ResponseEntity<ErrorResponse> runtimeException(RuntimeException ex) {
-        log.error("처리되지 않은 에러입니다.", ex);
-        ErrorResponse response = new ErrorResponse(ErrorCode.INTERNAL_SERVER_ERR);
-        return new ResponseEntity<>(response, HttpStatus.valueOf(response.getStatus()));
-    }
+//    @ExceptionHandler({RuntimeException.class})
+//    public ResponseEntity<ErrorResponse> runtimeException(RuntimeException ex) {
+//        log.error("처리되지 않은 에러입니다.", ex);
+//        ErrorResponse response = new ErrorResponse(ErrorCode.INTERNAL_SERVER_ERR);
+//        return new ResponseEntity<>(response, HttpStatus.valueOf(response.getStatus()));
+//    }
     @ExceptionHandler(HttpRequestMethodNotSupportedException.class)
     protected ResponseEntity<ErrorResponse> httpRequestMethodNotSupportedExceptionHandle(HttpRequestMethodNotSupportedException ex) {
         log.error("지원하지 않는 메소드 요청입니다.", ex.getMethod());
         ErrorResponse response = new ErrorResponse(ErrorCode.METHOD_NOT_ALLOWED);
         return new ResponseEntity<>(response, HttpStatus.METHOD_NOT_ALLOWED);
     }
-    @ExceptionHandler(Exception.class)
-    public ResponseEntity<ErrorResponse> handleException(Exception ex) {
-        log.error("!!!!!! SERVER ERROR !!!!!!", ex.getMessage());
-        ErrorResponse response = new ErrorResponse(ErrorCode.INTERNAL_SERVER_ERR);
-        return new ResponseEntity<>(response, HttpStatus.valueOf(response.getStatus()));
-    }
+//    @ExceptionHandler(Exception.class)
+//    public ResponseEntity<ErrorResponse> handleException(Exception ex) {
+//        log.error("!!!!!! SERVER ERROR !!!!!!", ex.getMessage());
+//        ErrorResponse response = new ErrorResponse(ErrorCode.INTERNAL_SERVER_ERR);
+//        return new ResponseEntity<>(response, HttpStatus.valueOf(response.getStatus()));
+//    }
 
 }
