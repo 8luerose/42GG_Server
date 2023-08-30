@@ -28,6 +28,7 @@ import com.gg.server.domain.receipt.type.ItemStatus;
 import com.gg.server.domain.season.data.Season;
 import com.gg.server.domain.season.service.SeasonFindService;
 import com.gg.server.domain.tier.data.Tier;
+import com.gg.server.domain.tier.data.TierRepository;
 import com.gg.server.domain.user.data.User;
 import com.gg.server.domain.user.data.UserRepository;
 import com.gg.server.domain.user.dto.*;
@@ -68,6 +69,7 @@ public class UserService {
     private final CoinHistoryRepository coinHistoryRepository;
     private final CoinPolicyRepository coinPolicyRepository;
     private final ReceiptRepository receiptRepository;
+    private final TierRepository tierRepository;
 
     private final String ATTENDANCE = "ATTENDANCE";
 
@@ -125,6 +127,10 @@ public class UserService {
         User targetUser = userFindService.findByIntraId(targetUserIntraId);
         String statusMessage = userFindService.getUserStatusMessage(targetUser);
         Tier tier = rankFindService.findByUserIdAndSeasonId(targetUser.getId(), seasonFindService.findCurrentSeason(LocalDateTime.now()).getId()).getTier();
+        if (tier == null) {
+            tier = tierRepository.getById(1L);
+            return new UserDetailResponseDto(targetUser, statusMessage, tier);
+        }
         return new UserDetailResponseDto(targetUser, statusMessage, tier);
     }
 
