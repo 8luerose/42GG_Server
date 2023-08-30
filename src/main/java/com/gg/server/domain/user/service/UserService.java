@@ -129,7 +129,7 @@ public class UserService {
         Rank rank = rankFindService.findByUserIdAndSeasonId(targetUser.getId(), seasonFindService.findCurrentSeason(LocalDateTime.now()).getId());
         Tier tier = rank.getTier();
         // 이번 시즌 랭크게임 플레이 안했을 시
-        if (rank.getWins() == 0 && rank.getLosses() == 0 && rank.getPpp() == 0){
+        if (rank.getWins() == 0 && rank.getLosses() == 0 && rank.getPpp() == 1000){
             // 기본티어 (언랭) 부여
             tier = tierRepository.getById(1L);
         }
