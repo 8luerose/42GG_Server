@@ -126,10 +126,12 @@ public class UserService {
     public UserDetailResponseDto getUserDetail(String targetUserIntraId) {
         User targetUser = userFindService.findByIntraId(targetUserIntraId);
         String statusMessage = userFindService.getUserStatusMessage(targetUser);
-        Tier tier = rankFindService.findByUserIdAndSeasonId(targetUser.getId(), seasonFindService.findCurrentSeason(LocalDateTime.now()).getId()).getTier();
-        if (tier == null) {
+        Rank rank = rankFindService.findByUserIdAndSeasonId(targetUser.getId(), seasonFindService.findCurrentSeason(LocalDateTime.now()).getId());
+        Tier tier = rank.getTier();
+        // 이번 시즌 랭크게임 플레이 안했을 시
+        if (rank.getWins() == 0 && rank.getLosses() == 0 && rank.getPpp() == 0){
+            // 기본티어 (언랭) 부여
             tier = tierRepository.getById(1L);
-            return new UserDetailResponseDto(targetUser, statusMessage, tier);
         }
         return new UserDetailResponseDto(targetUser, statusMessage, tier);
     }
