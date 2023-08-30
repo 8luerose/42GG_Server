@@ -26,24 +26,26 @@ public class TierService {
         List<Tier> tierList = tierRepository.findAll();
 
         // 1, 2, 3등 무지개
-        int top10percentPpp = rankList.get((int) (totalNumber * 0.1)).getPpp();
+        int top30percentPpp = rankList.get((int) (totalNumber * 0.3)).getPpp();
         int top5percentPpp = rankList.get((int) (totalNumber * 0.05)).getPpp();
         for (Rank rank : rankList) {
             if (rank.getPpp() < 980) {
-                rank.updateTier(tierList.get(0));
-            } else if (rank.getPpp() < 1020) {
                 rank.updateTier(tierList.get(1));
-            } else if (rank.getPpp() < 1060) {
+            } else if (rank.getPpp() < 1020) {
                 rank.updateTier(tierList.get(2));
-            } else if (rank.getPpp() < 1100) {
+            } else if (rank.getPpp() < 1060) {
                 rank.updateTier(tierList.get(3));
-            } else if (rank.getPpp() > top10percentPpp && rank.getPpp() > 1100) {
+            } else if (rank.getPpp() > top30percentPpp && rank.getPpp() > 1060) {
                 rank.updateTier(tierList.get(4));
-            } else if (rank.getPpp() > top5percentPpp && rank.getPpp() > 1100) {
+            } else if (rank.getPpp() > top5percentPpp && rank.getPpp() > 1060) {
                 rank.updateTier(tierList.get(5));
             } else {
                 rank.updateTier(tierList.get(4));
             }
+        }
+        List<Rank> top3 = rankRepository.findTop3BySeasonIdOrderByPppDesc(season.getId());
+        for (Rank rank : top3) {
+            rank.updateTier(tierList.get(6));
         }
     }
 }

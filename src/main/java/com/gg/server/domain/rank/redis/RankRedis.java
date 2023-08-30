@@ -24,26 +24,30 @@ public class RankRedis implements Serializable {
     private String statusMessage;
     private String tierImageUrl;
 
-    public void updateRank(int changePpp, int wins, int losses, int top10percentPpp, int top5percentPpp, List<Tier> tierList) {
+    public void updateRank(int changePpp, int wins, int losses, int top10percentPpp, int top5percentPpp, List<Tier> tierList, boolean isTop3) {
         this.ppp += changePpp;
         this.wins = wins;
         this.losses = losses;
 
         // tier Image 변경 로직
         if (this.ppp < 980) {
-            this.tierImageUrl = tierList.get(0).getImageUri();
-        } else if (this.ppp < 1020) {
             this.tierImageUrl = tierList.get(1).getImageUri();
-        } else if (this.ppp < 1060) {
+        } else if (this.ppp < 1020) {
             this.tierImageUrl = tierList.get(2).getImageUri();
-        } else if (this.ppp < 1100) {
+        } else if (this.ppp < 1060) {
             this.tierImageUrl = tierList.get(3).getImageUri();
-        } else if (this.ppp > top10percentPpp && this.ppp > 1100) {
+        } else if (this.ppp < 1100) {
             this.tierImageUrl = tierList.get(4).getImageUri();
-        } else if (this.ppp > top5percentPpp && this.ppp > 1100) {
+        } else if (this.ppp > top10percentPpp && this.ppp > 1100) {
             this.tierImageUrl = tierList.get(5).getImageUri();
+        } else if (this.ppp > top5percentPpp && this.ppp > 1100) {
+            this.tierImageUrl = tierList.get(6).getImageUri();
         } else {
             this.tierImageUrl = tierList.get(4).getImageUri();
+        }
+        // top3일 경우 무지개
+        if (isTop3) {
+            this.tierImageUrl = tierList.get(7).getImageUri();
         }
     }
 

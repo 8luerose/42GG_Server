@@ -65,12 +65,22 @@ public class RankRedisService {
         List<Rank> rankList = rankRepository.findAllBySeasonIdOrderByPppDesc(seasonId);
         List<Tier> tierList = tierRepository.findAll();
         Integer totalNumber = rankRepository.countAllBySeasonId(seasonId);
-        int top10percentPpp = rankList.get((int) (totalNumber * 0.1)).getPpp();
+
+        boolean isTop3 = false;
+
+        for (int i = 0; i < 3; i++) {
+            if (rankList.get(i).getUser().equals(rank.getUser())) {
+                isTop3 = true;
+                break;
+            }
+        }
+
+        int top30percentPpp = rankList.get((int) (totalNumber * 0.3)).getPpp();
         int top5percentPpp = rankList.get((int) (totalNumber * 0.05)).getPpp();
         rank.modifyUserRank(rank.getPpp() + changedPpp, win, losses);
 
         myTeam.updateRank(changedPpp,
-                win, losses, top10percentPpp, top5percentPpp, tierList);
+                win, losses, top30percentPpp, top5percentPpp, tierList, isTop3);
     }
 
     public void rollbackRank(TeamUser teamUser, int ppp, Long seasonId) {
