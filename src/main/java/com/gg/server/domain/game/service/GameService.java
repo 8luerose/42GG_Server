@@ -181,8 +181,10 @@ public class GameService {
                 setTeamScore(myTeam, scoreDto.getMyTeamScore(), scoreDto.getMyTeamScore() > scoreDto.getEnemyTeamScore());
                 setTeamScore(enemyTeam, scoreDto.getEnemyTeamScore(), scoreDto.getMyTeamScore() < scoreDto.getEnemyTeamScore());
                 expUpdates(game, teams);
+                // Redis 수정 (Redis 내 Tier 수정)
                 rankRedisService.updateRankRedis(myTeam, enemyTeam, game);
-                tierService.updateAllTier();
+                // Tier 수정
+                tierService.updateAllTier(game.getSeason());
             } else {
                 // score 가 이미 입력됨
                 return false;

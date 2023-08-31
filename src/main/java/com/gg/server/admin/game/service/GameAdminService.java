@@ -17,6 +17,7 @@ import com.gg.server.domain.match.data.RedisMatchUserRepository;
 import com.gg.server.domain.pchange.data.PChange;
 import com.gg.server.domain.pchange.data.PChangeRepository;
 
+import com.gg.server.domain.rank.data.RankRepository;
 import com.gg.server.domain.rank.redis.RankRedisService;
 import com.gg.server.domain.season.data.Season;
 import com.gg.server.domain.season.exception.SeasonNotFoundException;
@@ -46,6 +47,7 @@ public class GameAdminService {
     private final RankRedisService rankRedisService;
     private final TeamUserAdminRepository teamUserAdminRepository;
     private final RedisMatchUserRepository redisMatchUserRepository;
+    private final RankRepository rankRepository;
 
     @Transactional(readOnly = true)
     public GameLogListAdminResponseDto findAllGamesByAdmin(Pageable pageable) {

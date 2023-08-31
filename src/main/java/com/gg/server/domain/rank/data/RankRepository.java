@@ -23,9 +23,8 @@ public interface RankRepository extends JpaRepository<Rank, Long> {
     @EntityGraph(attributePaths = {"user", "tier"})
     List<Rank> findAllBySeasonId(Long seasonId);
 
-    List<Rank> findTop3BySeasonIdOrderByPppDesc(Long seasonId);
-
     List<Rank> findAllBySeasonIdOrderByPppDesc(Long seasonId);
 
-    Integer countAllBySeasonId(Long seasonId);
+    @Query(value = "select count(r) from Rank r where r.season.id=:seasonId and not (r.wins = 0 and r.losses = 0)")
+    Long countRealRankPlayers(@Param("seasonId") Long seasonId);
 }

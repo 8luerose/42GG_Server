@@ -3,6 +3,7 @@ package com.gg.server.domain.tier.data;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.ToString;
 
 import javax.persistence.*;
 import java.io.Serializable;
@@ -11,6 +12,7 @@ import java.io.Serializable;
 @Getter
 @NoArgsConstructor
 @AllArgsConstructor
+@ToString
 public class Tier implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
