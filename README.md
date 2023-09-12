@@ -1,4 +1,4 @@
-# 42arcade.gg.server.v2
+# 42arcade.gg.server.v3
 
 
 ## ⚡️ 프로젝트 소개
@@ -31,7 +31,7 @@
 <img src="https://img.shields.io/badge/JIRA-0052CC?style=for-the-badge&logo=jirasoftware&logoColor=white">
 
 ## ⚡️ 프로젝트 개발기간
-- 2023.04.16 ~ 2023.06.23
+- 2023.06.29 ~ 2023.09.22(배포 예정)
 
 ## ⚡️ 프로젝트 아키텍처
 <img alt="systemArchitecture" src="https://github.com/42organization/42gg.server.dev.v2/assets/67796301/c51e8d73-d8f2-4f5e-935c-325ec263857e" >&nbsp;&nbsp;&nbsp;&nbsp;
@@ -78,27 +78,26 @@
 <table>
   <thead>
     <tr>
+        <td align=center>👩🏻‍💻</td>
         <td align=center>🏓</td>
         <td align=center>🏓</td>
         <td align=center>🏓</td>
         <td align=center>🏓</td>
-        <td align=center>👨🏻‍💻</td>
     </tr>
   </thead>
     <tr>
-        <td align=center><a href="https://github.com/AYoungSn">안영선 @yoahn</a></td>
-        <td align=center><a href="https://github.com/greatSweetMango">김재혁 @jaehyuki</a></td>
-        <td align=center><a href="https://github.com/kmularise">김의진 @yuikim</a></td>
-        <td align=center><a href="https://github.com/wken5577">이현규 @hyunkyle</a></td>
+        <td align=center><a href="https://github.com/rrrmina">류민아 @mryoo</a></td>
+        <td align=center><a href="https://github.com/Sion99">신시온 @sishin</a></td>
+        <td align=center><a href="https://github.com/kylew1004">류경엽 @klew</a></td>
+        <td align=center><a href="https://github.com/8luerose">권태현 @taehkwon</a></td>
         <td align=center><a href="https://github.com/FeFe2200">이 철 @cheolee</a></td>
     </tr>
     <tr>
-        <td align=center>PM<br>Game기능 담당</td>
-        <td align=center>DB 마이그레이션&관리,<br>알림,관리자 기능 일부담당</td>
-        <td align=center>매칭 기능,<br>
-로그인기능 일부담당,<br>관리자기능 일부담당</td>
-        <td align=center>로그인기능,<br>인프라 담당</td>
-        <td align=center>관리자 기능,<br>로그 담당</td>
+        <td align=center>PM<br>확성기, 출석 기능 담당</td>
+        <td align=center>티어, 상품 관리자 기능 담당,<br>인프라 담당</td>
+        <td align=center>유저 이미지,<br>유저 프로필 장식 기능 담당</td>
+        <td align=center>상점 기능 담당</td>
+        <td align=center>재화 기능 담당</td>
     </tr>
 
 </table>
