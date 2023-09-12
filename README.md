@@ -93,7 +93,7 @@
         <td align=center><a href="https://github.com/FeFe2200">이 철 @cheolee</a></td>
     </tr>
     <tr>
-        <td align=center>PM<br>확성기,<br>출석 기능 담당</td>
+        <td align=center>PM<br>확성기,출석 기능 담당</td>
         <td align=center>티어, 상품 관리자 기능 담당,<br>인프라 담당</td>
         <td align=center>유저 이미지,<br>유저 프로필 장식 기능 담당</td>
         <td align=center>상점 기능 담당</td>
