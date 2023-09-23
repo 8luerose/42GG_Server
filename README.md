@@ -1,4 +1,4 @@
-![MAIN_1](https://github.com/8luerose/42GG_Server/assets/105616046/ee1c1f9f-d599-476d-8837-95c8da320f84)# 42arcade.gg.server.v3
+# 42arcade.gg.server.v3
 
 https://42gg.kr/
 
@@ -114,67 +114,16 @@ https://42gg.kr/
 ![MAIN_3](https://github.com/8luerose/42GG_Server/assets/105616046/4fb93990-904c-470d-af9b-685367f82ba6)
 
 
-# 매치 페이지
-
-## 게임 매칭
-
-![MATCH_1](https://github.com/8luerose/42GG_Server/assets/105616046/911ba1ab-ec16-409d-803e-9fe7f885b7fc)
-
-![MATCH_2](https://github.com/8luerose/42GG_Server/assets/105616046/db239d6b-2be0-450d-ad51-9f5408228005)
-
-![MATCH_3](https://github.com/8luerose/42GG_Server/assets/105616046/d1cf5132-ed8f-4ba8-afee-89a147b04a71)
-
-## 점수 입력
-
-![점수입력창](https://github.com/8luerose/42GG_Server/assets/105616046/6111cbbe-5ab5-4041-8cf2-13ab2ce511c4)
-
-![점수제출창](https://github.com/8luerose/42GG_Server/assets/105616046/33f78c6b-6878-4ddd-8063-e8c36c4d8a84)
-
-![레벨](https://github.com/8luerose/42GG_Server/assets/105616046/1bd42332-1c62-4530-9bde-89d68d9731df)
-
-![코인](https://github.com/8luerose/42GG_Server/assets/105616046/8b53b2c7-00c3-4114-b6ae-f42abd72e2b7)
-
-
-# 랭크 페이지
-
-![RANK_1](https://github.com/8luerose/42GG_Server/assets/105616046/9417b410-dcc3-4eb0-9857-745d7b93824d)
-
-![RANK_2](https://github.com/8luerose/42GG_Server/assets/105616046/88c40d92-7a49-4d5a-8592-00936f0eba59)
-
-# 게임 기록 페이지
-
-![GAME_1](https://github.com/8luerose/42GG_Server/assets/105616046/2e057946-1e91-4265-9d8f-48c3a6a62078)
-
-![GAME_2](https://github.com/8luerose/42GG_Server/assets/105616046/b6b46843-8ae0-45fb-bf93-918ca80cc3bd)
-
-![GAME_3](https://github.com/8luerose/42GG_Server/assets/105616046/9ef6df77-ae0d-485d-ac21-0a80a0c5e536)
-
-
-# 상점 페이지
-
-## 상점
-
-![STORE_1](https://github.com/8luerose/42GG_Server/assets/105616046/ce753e86-3640-4e6c-848e-8ec3e7b36bf1)
-
-![STORE_2](https://github.com/8luerose/42GG_Server/assets/105616046/8495c18c-9050-425e-9663-6e5a4e1c38da)
-
-[뽑기 아이템 확률](https://ruby-motorcycle-99b.notion.site/21cadc74ddb245ea9494c7b203892c83?pvs=4)
-
-## 보관함
-
-![INVENTORY_1](https://github.com/8luerose/42GG_Server/assets/105616046/b291109a-eccc-4900-ba23-4d83ace15725)
-
-![INVENTORY_2](https://github.com/8luerose/42GG_Server/assets/105616046/12eeaed7-2bf1-413e-808c-d49f5286381d)
-
-![INVENTORY_3](https://github.com/8luerose/42GG_Server/assets/105616046/db84eb2f-638d-4aaf-b4a1-8b6bbe08fdc4)
-
-
-# 프로필 페이지
-
-![USER_1](https://github.com/8luerose/42GG_Server/assets/105616046/ee64ce37-a81d-4c80-851f-23da82163d18)
-
-![USER_2](https://github.com/8luerose/42GG_Server/assets/105616046/cb872d63-260d-4b71-b35d-36e8fd4a6d65)
-
+# 
+<img width="837" alt="스크린샷 2023-09-23 오후 11 39 07" src="https://github.com/8luerose/42GG_Server/assets/105616046/e5ed0cc3-6444-4148-b433-850363c6a5ee">
+<img width="871" alt="스크린샷 2023-09-23 오후 11 39 17" src="https://github.com/8luerose/42GG_Server/assets/105616046/8b872f6c-9f16-45c8-93e9-901991cd257c">
+<img width="586" alt="스크린샷 2023-09-23 오후 11 39 25" src="https://github.com/8luerose/42GG_Server/assets/105616046/38407546-43a3-444a-9f18-eb830df061db">
+<img width="667" alt="스크린샷 2023-09-23 오후 11 39 32" src="https://github.com/8luerose/42GG_Server/assets/105616046/e82fcf7f-b92f-4d2b-bff9-fffc715fa109">
+<img width="756" alt="스크린샷 2023-09-23 오후 11 39 39" src="https://github.com/8luerose/42GG_Server/assets/105616046/fdd3c55f-542f-464c-b3f0-2103d827a2e8">
+<img width="890" alt="스크린샷 2023-09-23 오후 11 39 52" src="https://github.com/8luerose/42GG_Server/assets/105616046/c7ec33c0-0990-405e-9c26-b3fb0d31c06b">
+<img width="885" alt="스크린샷 2023-09-23 오후 11 39 58" src="https://github.com/8luerose/42GG_Server/assets/105616046/b80109a9-fb34-4759-a43c-6f368cf88ea5">
+<img width="932" alt="스크린샷 2023-09-23 오후 11 40 05" src="https://github.com/8luerose/42GG_Server/assets/105616046/69201dd5-23c4-4284-8c98-520eec8e35a6">
+<img width="727" alt="스크린샷 2023-09-23 오후 11 40 12" src="https://github.com/8luerose/42GG_Server/assets/105616046/af8bfa4d-894f-4b0f-9b53-6484ba713e03">
 
 
 
