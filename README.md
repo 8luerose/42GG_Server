@@ -105,25 +105,16 @@ https://42gg.kr/
 </table>
 
 
-# 메인 페이지
-
-![MAIN_1](https://github.com/8luerose/42GG_Server/assets/105616046/477e9712-763a-4de5-9321-6cf1ac4945c3)
-
-![MAIN_2](https://github.com/8luerose/42GG_Server/assets/105616046/63d84c28-e11d-40ee-a422-62050e814af8)
-
-![MAIN_3](https://github.com/8luerose/42GG_Server/assets/105616046/4fb93990-904c-470d-af9b-685367f82ba6)
-
-
 # 
-<img width="837" alt="스크린샷 2023-09-23 오후 11 39 07" src="https://github.com/8luerose/42GG_Server/assets/105616046/e5ed0cc3-6444-4148-b433-850363c6a5ee">
-<img width="871" alt="스크린샷 2023-09-23 오후 11 39 17" src="https://github.com/8luerose/42GG_Server/assets/105616046/8b872f6c-9f16-45c8-93e9-901991cd257c">
-<img width="586" alt="스크린샷 2023-09-23 오후 11 39 25" src="https://github.com/8luerose/42GG_Server/assets/105616046/38407546-43a3-444a-9f18-eb830df061db">
-<img width="667" alt="스크린샷 2023-09-23 오후 11 39 32" src="https://github.com/8luerose/42GG_Server/assets/105616046/e82fcf7f-b92f-4d2b-bff9-fffc715fa109">
-<img width="756" alt="스크린샷 2023-09-23 오후 11 39 39" src="https://github.com/8luerose/42GG_Server/assets/105616046/fdd3c55f-542f-464c-b3f0-2103d827a2e8">
-<img width="890" alt="스크린샷 2023-09-23 오후 11 39 52" src="https://github.com/8luerose/42GG_Server/assets/105616046/c7ec33c0-0990-405e-9c26-b3fb0d31c06b">
-<img width="885" alt="스크린샷 2023-09-23 오후 11 39 58" src="https://github.com/8luerose/42GG_Server/assets/105616046/b80109a9-fb34-4759-a43c-6f368cf88ea5">
-<img width="932" alt="스크린샷 2023-09-23 오후 11 40 05" src="https://github.com/8luerose/42GG_Server/assets/105616046/69201dd5-23c4-4284-8c98-520eec8e35a6">
-<img width="727" alt="스크린샷 2023-09-23 오후 11 40 12" src="https://github.com/8luerose/42GG_Server/assets/105616046/af8bfa4d-894f-4b0f-9b53-6484ba713e03">
+<img width="693" alt="스크린샷 2023-09-23 오후 11 46 01" src="https://github.com/8luerose/42GG_Server/assets/105616046/e1be683e-c4b7-404b-87d1-e1a70ae48274">
+<img width="695" alt="스크린샷 2023-09-23 오후 11 46 18" src="https://github.com/8luerose/42GG_Server/assets/105616046/5ebe0698-b2b6-419b-bcad-304c89899d5d">
+<img width="476" alt="스크린샷 2023-09-23 오후 11 46 38" src="https://github.com/8luerose/42GG_Server/assets/105616046/97b717b4-499f-4a7f-aa43-c3bde0f946be">
+<img width="483" alt="스크린샷 2023-09-23 오후 11 46 53" src="https://github.com/8luerose/42GG_Server/assets/105616046/97e35f70-e777-4eb4-8607-30765a9a37d1">
+<img width="696" alt="스크린샷 2023-09-23 오후 11 47 05" src="https://github.com/8luerose/42GG_Server/assets/105616046/8fbdcfde-77d4-4296-9904-c1fc0d254b5d">
+<img width="629" alt="스크린샷 2023-09-23 오후 11 48 01" src="https://github.com/8luerose/42GG_Server/assets/105616046/77ce958b-5901-4638-9833-ab27cc182e88">
+<img width="689" alt="스크린샷 2023-09-23 오후 11 48 18" src="https://github.com/8luerose/42GG_Server/assets/105616046/f953cbc4-9d97-4485-b318-4fe73e3e3222">
+<img width="504" alt="스크린샷 2023-09-23 오후 11 48 32" src="https://github.com/8luerose/42GG_Server/assets/105616046/889b68d5-1050-4c73-ad60-497bcc02ab12">
+
 
 
 
