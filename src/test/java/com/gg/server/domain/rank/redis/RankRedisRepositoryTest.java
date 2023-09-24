@@ -1,17 +1,16 @@
 package com.gg.server.domain.rank.redis;
 
+import com.gg.server.domain.rank.exception.RedisDataNotFoundException;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
 @SpringBootTest
-@Transactional
 class RankRedisRepositoryTest {
 
 
@@ -73,9 +72,23 @@ class RankRedisRepositoryTest {
         Assertions.assertThat(scoreInZSet).isEqualTo(ppp - decrementPpp);
     }
 
+
+    @Test
+    void add(){
+        Long userId = 1L;
+        Long userId2 = 2L;
+        Long userId3 = 3L;
+        int ppp = 100;
+        int ppp2 = 200;
+        int ppp3 = 300;
+        redisRepository.addToZSet(zSetKey, userId, ppp);
+        redisRepository.addToZSet(zSetKey, userId2, ppp2);
+        redisRepository.addToZSet(zSetKey, userId3, ppp3);
+    }
+
     @Test
     void getRankInZSet() {
-        //given
+//        given
         Long userId = 1L;
         Long userId2 = 2L;
         Long userId3 = 3L;
@@ -142,8 +155,9 @@ class RankRedisRepositoryTest {
         redisRepository.deleteFromZSet(zSetKey, userId);
 
         //then
-        Long ranking = redisRepository.getRankInZSet(zSetKey, userId);
-        Assertions.assertThat(ranking).isNull();
+        Assertions.assertThatThrownBy(()->{
+            redisRepository.getRankInZSet(zSetKey, userId);
+        }).isInstanceOf(RedisDataNotFoundException.class);
     }
 
 
@@ -157,7 +171,7 @@ class RankRedisRepositoryTest {
         int win = 3;
         int lose = 4;
         String statusMessage = "statusMessage";
-        RankRedis ranking = new RankRedis(userId, "aa", ppp, win, lose, statusMessage, "aa");
+        RankRedis ranking = new RankRedis(userId, "aa", ppp, win, lose, statusMessage, "https://42gg-public-test-image.s3.ap-northeast-2.amazonaws.com/tier/hand.svg", "#000000");
 
         //when
         redisRepository.addRankData(hashKey, userId, ranking);
@@ -181,7 +195,7 @@ class RankRedisRepositoryTest {
         int win = 3;
         int lose = 4;
         String statusMessage = "statusMessage";
-        RankRedis ranking = new RankRedis(userId, "aa", ppp, win, lose, statusMessage, "aa");
+        RankRedis ranking = new RankRedis(userId, "aa", ppp, win, lose, statusMessage, "https://42gg-public-image.s3.ap-northeast-2.amazonaws.com/images/nheo.jpeg", "#000000");
         redisRepository.addRankData(hashKey, userId, ranking);
 
         //when
@@ -189,7 +203,7 @@ class RankRedisRepositoryTest {
         int newWin = 4;
         int newLose = 5;
         String newStatusMessage = "newStatusMessage";
-        RankRedis newRanking = new RankRedis(userId, "aa", newPpp, newWin, newLose, newStatusMessage, "aa");
+        RankRedis newRanking = new RankRedis(userId, "aa", newPpp, newWin, newLose, newStatusMessage, "https://42gg-public-image.s3.ap-northeast-2.amazonaws.com/images/nheo.jpeg", "#000000");
 
         redisRepository.updateRankData(hashKey, userId, newRanking);
         //then
@@ -211,15 +225,16 @@ class RankRedisRepositoryTest {
         int win = 3;
         int lose = 4;
         String statusMessage = "statusMessage";
-        RankRedis ranking = new RankRedis(userId, "aa", ppp, win, lose, statusMessage, "aa");
+        RankRedis ranking = new RankRedis(userId, "aa", ppp, win, lose, statusMessage, "https://42gg-public-image.s3.ap-northeast-2.amazonaws.com/images/nheo.jpeg", "#000000");
         redisRepository.addRankData(hashKey, userId, ranking);
 
         //when
         redisRepository.deleteRankData(hashKey, userId);
 
         //then
-        RankRedis findRanking = redisRepository.findRankByUserId(hashKey, userId);
-        Assertions.assertThat(findRanking).isNull();
+        Assertions.assertThatThrownBy(() -> {
+            redisRepository.findRankByUserId(hashKey, userId);
+        }).isInstanceOf(RedisDataNotFoundException.class);
     }
 
     @Test
@@ -234,10 +249,10 @@ class RankRedisRepositoryTest {
         int ppp3 = 300;
         int ppp4 = 400;
 
-        RankRedis rank1 = new RankRedis(userId, "aa", ppp,  0, 0, "statusMessage", "aa");
-        RankRedis rank2 = new RankRedis(userId2,"aa", ppp2,  0, 0, "statusMessage", "aa");
-        RankRedis rank3 = new RankRedis(userId3, "aa", ppp3,  0, 0, "statusMessage", "aa");
-        RankRedis rank4 = new RankRedis(userId4, "aa", ppp4,  0, 0, "statusMessage", "aa");
+        RankRedis rank1 = new RankRedis(userId, "aa", ppp,  0, 0, "statusMessage", "https://42gg-public-image.s3.ap-northeast-2.amazonaws.com/images/nheo.jpeg", "#000000");
+        RankRedis rank2 = new RankRedis(userId2,"aa", ppp2,  0, 0, "statusMessage", "https://42gg-public-image.s3.ap-northeast-2.amazonaws.com/images/nheo.jpeg", "#000000");
+        RankRedis rank3 = new RankRedis(userId3, "aa", ppp3,  0, 0, "statusMessage", "https://42gg-public-image.s3.ap-northeast-2.amazonaws.com/images/nheo.jpeg", "#000000");
+        RankRedis rank4 = new RankRedis(userId4, "aa", ppp4,  0, 0, "statusMessage", "https://42gg-public-image.s3.ap-northeast-2.amazonaws.com/images/nheo.jpeg", "#000000");
         redisRepository.addRankData(hashKey, userId, rank1);
         redisRepository.addRankData(hashKey, userId2, rank2);
         redisRepository.addRankData(hashKey, userId3, rank3);

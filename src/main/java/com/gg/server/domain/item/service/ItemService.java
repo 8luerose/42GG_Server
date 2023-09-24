@@ -9,9 +9,12 @@ import com.gg.server.domain.item.dto.ItemStoreResponseDto;
 import com.gg.server.domain.item.dto.UserItemListResponseDto;
 import com.gg.server.domain.item.dto.UserItemResponseDto;
 import com.gg.server.domain.item.exception.*;
+import com.gg.server.domain.item.type.ItemType;
 import com.gg.server.domain.noti.service.NotiService;
 import com.gg.server.domain.receipt.data.Receipt;
 import com.gg.server.domain.receipt.data.ReceiptRepository;
+import com.gg.server.domain.receipt.exception.ItemStatusException;
+import com.gg.server.domain.receipt.exception.ReceiptNotOwnerException;
 import com.gg.server.domain.receipt.type.ItemStatus;
 import com.gg.server.domain.user.data.User;
 import com.gg.server.domain.user.data.UserRepository;
@@ -50,11 +53,10 @@ public class ItemService {
     @Transactional
     public void purchaseItem(Long itemId, UserDto userDto) {
         Item item = itemRepository.findById(itemId)
-                .orElseThrow( ()->  {
+                .orElseThrow(() -> {
                     throw new ItemNotFoundException();
                 });
-        if (!item.getIsVisible())
-        {
+        if (!item.getIsVisible()) {
             throw new ItemNotPurchasableException();
         }
 
@@ -62,9 +64,15 @@ public class ItemService {
         Integer finalPrice;
         if (item.getDiscount() != null && item.getDiscount() > 0) {
             finalPrice = item.getPrice() - (item.getPrice() * item.getDiscount() / 100);
-        }
-        else {
+        } else {
             finalPrice = item.getPrice();
+        }
+
+        User payUser = userRepository.findById(userDto.getId())
+                .orElseThrow(() -> new UserNotFoundException());
+
+        if (payUser.getRoleType() == RoleType.GUEST) {
+            throw new KakaoPurchaseException();
         }
 
         userCoinChangeService.purchaseItemCoin(item, finalPrice, userDto.getId());
@@ -77,7 +85,7 @@ public class ItemService {
     @Transactional
     public void giftItem(Long itemId, String ownerId, UserDto userDto) {
         Item item = itemRepository.findById(itemId)
-                .orElseThrow( ()->  {
+                .orElseThrow(() -> {
                     throw new ItemNotFoundException();
                 });
         if (!item.getIsVisible()) {
@@ -88,20 +96,19 @@ public class ItemService {
         Integer finalPrice;
         if (item.getDiscount() != null && item.getDiscount() > 0) {
             finalPrice = item.getPrice() - (item.getPrice() * item.getDiscount() / 100);
-        }
-        else {
+        } else {
             finalPrice = item.getPrice();
         }
 
         User payUser = userRepository.findById(userDto.getId())
-                .orElseThrow(() -> new UserNotFoundException());
+                .orElseThrow(UserNotFoundException::new);
 
         if (payUser.getRoleType() == RoleType.GUEST) {
             throw new KakaoPurchaseException();
         }
 
         User owner = userRepository.findByIntraId(ownerId)
-                .orElseThrow(() -> new UserNotFoundException());
+                .orElseThrow(UserNotFoundException::new);
 
         if (owner.getRoleType() == RoleType.GUEST) {
             throw new KakaoGiftException();
@@ -120,5 +127,23 @@ public class ItemService {
         Page<Receipt> receipts = userItemRepository.findByOwnerIntraId(userDto.getIntraId(), pageable);
         Page<UserItemResponseDto> responseDtos = receipts.map(UserItemResponseDto::new);
         return new UserItemListResponseDto(responseDtos.getContent(), responseDtos.getTotalPages());
+    }
+
+    public void checkItemOwner(User loginUser, Receipt receipt) {
+        if (!receipt.getOwnerIntraId().equals(loginUser.getIntraId()))
+            throw new ReceiptNotOwnerException();
+    }
+
+    public void checkItemType(Receipt receipt, ItemType itemType) {
+        if (!receipt.getItem().getType().equals(itemType))
+            throw new ItemTypeException();
+    }
+
+    public void checkItemStatus(Receipt receipt) {
+        if (receipt.getItem().getType().equals(ItemType.MEGAPHONE)) {
+            if (!(receipt.getStatus().equals(ItemStatus.WAITING) || receipt.getStatus().equals(ItemStatus.USING))) throw new ItemStatusException();
+        } else {
+            if (!receipt.getStatus().equals(ItemStatus.BEFORE)) throw new ItemStatusException();
+        }
     }
 }

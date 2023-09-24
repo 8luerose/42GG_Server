@@ -24,6 +24,9 @@ public enum ErrorCode {
     //coinPolicy
     CoinPolicy_NOT_FOUND(404, "CP100", "COINPOLICY NOT FOUND"),
 
+    //coinHistory
+    COIN_HISTORY_NOT_FOUND(404, "CH100", "COIN HISTORY NOT FOUND"),
+
     //season
     SEASON_NOT_FOUND(404, "SE100", "SEASON NOT FOUND"),
     SEASON_FORBIDDEN(400, "SE500", "SEASON FORBIDDEN ERROR"),
@@ -37,6 +40,9 @@ public enum ErrorCode {
     RANK_NOT_FOUND(404, "RK100", "RANK NOT FOUND"),
     REDIS_RANK_NOT_FOUND(404, "RK101", "REDIS RANK NOT FOUND"),
     RANK_UPDATE_FAIL(400, "RK200", "RANK UPDATE FAIL"),
+
+    //tier
+    TIER_NOT_FOUND(404, "TR100", "TIER NOT FOUND"),
 
     //item
     ITEM_NOT_FOUND(404, "IT100", "ITEM NOT FOUND"),
@@ -99,7 +105,6 @@ public enum ErrorCode {
      * PChange
      **/
     PCHANGE_NOT_FOUND(404, "PC100", "PChange 가 존재하지 않습니다."),
-
 
     AWS_S3_ERR(500, "CL001", "AWS S3 Error"),
     AWS_SERVER_ERR(500, "CL002", "AWS Error"),

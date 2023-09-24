@@ -11,7 +11,6 @@ import java.time.LocalDateTime;
 @Entity
 @Getter
 @NoArgsConstructor
-@AllArgsConstructor
 public class Item {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -35,7 +34,6 @@ public class Item {
 
     @NotNull
     @Column(name = "is_visible")
-    @Setter
     private Boolean isVisible;
 
     @Column(name = "discount")
@@ -55,21 +53,7 @@ public class Item {
     private String creatorIntraId;
 
     @Column(name = "deleter_intra_id", length = 10)
-    @Setter
     private String deleterIntraId;
-
-    public Item(String name, String mainContent, String subContent, String imageUri, Integer price,
-                Boolean isVisible, Integer discount, ItemType type, LocalDateTime createdAt) {
-        this.name = name;
-        this.mainContent = mainContent;
-        this.subContent = subContent;
-        this.imageUri = imageUri;
-        this.price = price;
-        this.isVisible = isVisible;
-        this.discount = discount;
-        this.type = type;
-        this.createdAt = createdAt;
-    }
 
     public Item(String name, String mainContent, String subContent, String imageUri, Integer price,
                 Boolean isVisible, Integer discount, ItemType type, LocalDateTime createdAt, String creatorIntraId) {
@@ -99,21 +83,13 @@ public class Item {
         this.type = updateRequestDto.getItemType();
     }
 
-    @Builder
-    public Item(ItemUpdateRequestDto updateRequestDto, String creatorIntraId) {
-        this.name = updateRequestDto.getName();
-        this.mainContent = updateRequestDto.getMainContent();
-        this.subContent = updateRequestDto.getSubContent();
-        this.price = updateRequestDto.getPrice();
-        this.discount = updateRequestDto.getDiscount();
-        this.isVisible = true;
-        this.creatorIntraId = creatorIntraId;
-        this.createdAt = LocalDateTime.now();
-        this.type = updateRequestDto.getItemType();
-    }
-
     public void imageUpdate(String imageUri) {
         this.imageUri = imageUri;
+    }
+
+    public void setVisibility(String intraId) {
+        this.isVisible = false;
+        this.deleterIntraId = intraId;
     }
 
     @Override

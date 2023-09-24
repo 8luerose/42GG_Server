@@ -1,12 +1,10 @@
 package com.gg.server.domain.coin.service;
 
-import com.gg.server.domain.coin.data.CoinHistoryRepository;
 import com.gg.server.domain.coin.data.CoinPolicyRepository;
 import com.gg.server.domain.coin.dto.UserGameCoinResultDto;
-import com.gg.server.domain.coin.type.HistoryType;
+import com.gg.server.domain.coin.exception.CoinPolicyNotFoundException;
 import com.gg.server.domain.game.service.GameFindService;
 import com.gg.server.domain.item.data.Item;
-import com.gg.server.domain.item.exception.InsufficientGgcoinException;
 import com.gg.server.domain.team.data.Team;
 import com.gg.server.domain.team.data.TeamUser;
 import com.gg.server.domain.user.data.User;
@@ -17,7 +15,6 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.time.LocalDateTime;
 import java.util.List;
 
 @Service
@@ -32,7 +29,8 @@ public class UserCoinChangeService {
     public int addAttendanceCoin(User user){
         if (coinHistoryService.hasAttendedToday(user))
             throw new UserAlreadyAttendanceException();
-        int coinIncrement = coinPolicyRepository.findTopByOrderByCreatedAtDesc().getAttendance();
+        int coinIncrement = coinPolicyRepository.findTopByOrderByCreatedAtDesc()
+                .orElseThrow(CoinPolicyNotFoundException::new).getAttendance();
         user.addGgCoin(coinIncrement);
         coinHistoryService.addAttendanceCoinHistory(user);
         return coinIncrement;
@@ -42,7 +40,7 @@ public class UserCoinChangeService {
     public void purchaseItemCoin(Item item, Integer price, Long userId){
 
         User user = userRepository.findById(userId)
-                .orElseThrow(() -> new UserNotFoundException());
+                .orElseThrow(UserNotFoundException::new);
 
         user.payGgCoin(price);
 
@@ -59,8 +57,9 @@ public class UserCoinChangeService {
 
     @Transactional
     public UserGameCoinResultDto addNormalGameCoin(Long userId) {
-        User user = userRepository.findById(userId).orElseThrow(() -> new UserNotFoundException());
-        int coinIncrement = coinPolicyRepository.findTopByOrderByCreatedAtDesc().getNormal();
+        User user = userRepository.findById(userId).orElseThrow(UserNotFoundException::new);
+        int coinIncrement = coinPolicyRepository.findTopByOrderByCreatedAtDesc()
+                .orElseThrow(CoinPolicyNotFoundException::new).getNormal();
 
         user.addGgCoin(coinIncrement);
         coinHistoryService.addNormalCoin(user);
@@ -69,7 +68,7 @@ public class UserCoinChangeService {
 
     @Transactional
     public UserGameCoinResultDto addRankGameCoin(Long gameId, Long userId) {
-        User user = userRepository.findById(userId).orElseThrow(() -> new UserNotFoundException());
+        User user = userRepository.findById(userId).orElseThrow(UserNotFoundException::new);
         int coinIncrement;
 
         if (userIsWinner(gameId, user))
@@ -86,9 +85,9 @@ public class UserCoinChangeService {
 
         for(Team team: teams) {
             for (TeamUser teamUser : team.getTeamUsers()){
-                if (teamUser.getUser().getId() == user.getId() && team.getWin() == true)
+                if (teamUser.getUser().getId() == user.getId() && team.getWin())
                     return true;
-                else if (teamUser.getUser().getId() == user.getId() && team.getWin() == false)
+                else if (teamUser.getUser().getId() == user.getId() && !team.getWin())
                     return false;
             }
         }

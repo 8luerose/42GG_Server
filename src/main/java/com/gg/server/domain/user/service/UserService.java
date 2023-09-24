@@ -1,14 +1,11 @@
 package com.gg.server.domain.user.service;
 
-import com.gg.server.domain.coin.data.CoinHistory;
-import com.gg.server.domain.coin.data.CoinHistoryRepository;
-import com.gg.server.domain.coin.data.CoinPolicyRepository;
 import com.gg.server.domain.coin.service.CoinHistoryService;
 import com.gg.server.domain.coin.service.UserCoinChangeService;
 import com.gg.server.domain.game.data.Game;
 import com.gg.server.domain.game.data.GameRepository;
 import com.gg.server.domain.game.type.StatusType;
-import com.gg.server.domain.item.exception.ItemTypeException;
+import com.gg.server.domain.item.service.ItemService;
 import com.gg.server.domain.item.type.ItemType;
 import com.gg.server.domain.match.data.RedisMatchUserRepository;
 import com.gg.server.domain.noti.data.NotiRepository;
@@ -16,6 +13,7 @@ import com.gg.server.domain.pchange.data.PChange;
 import com.gg.server.domain.pchange.data.PChangeRepository;
 import com.gg.server.domain.pchange.exception.PChangeNotExistException;
 import com.gg.server.domain.rank.data.Rank;
+import com.gg.server.domain.rank.exception.RankNotFoundException;
 import com.gg.server.domain.rank.exception.RedisDataNotFoundException;
 import com.gg.server.domain.rank.redis.RankRedis;
 import com.gg.server.domain.rank.redis.RankRedisRepository;
@@ -23,13 +21,13 @@ import com.gg.server.domain.rank.redis.RedisKeyManager;
 import com.gg.server.domain.rank.service.RankFindService;
 import com.gg.server.domain.receipt.data.Receipt;
 import com.gg.server.domain.receipt.data.ReceiptRepository;
-import com.gg.server.domain.receipt.exception.ItemStatusException;
 import com.gg.server.domain.receipt.exception.ReceiptNotFoundException;
-import com.gg.server.domain.receipt.exception.ReceiptNotOwnerException;
 import com.gg.server.domain.receipt.type.ItemStatus;
 import com.gg.server.domain.season.data.Season;
 import com.gg.server.domain.season.service.SeasonFindService;
 import com.gg.server.domain.tier.data.Tier;
+import com.gg.server.domain.tier.data.TierRepository;
+import com.gg.server.domain.tier.exception.TierNotFoundException;
 import com.gg.server.domain.user.data.User;
 import com.gg.server.domain.user.data.UserImage;
 import com.gg.server.domain.user.data.UserImageRepository;
@@ -44,7 +42,6 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
@@ -75,6 +72,8 @@ public class UserService {
     private final ReceiptRepository receiptRepository;
     private final AsyncNewUserImageUploader asyncNewUserImageUploader;
     private final UserImageRepository userImageRepository;
+    private final ItemService itemService;
+    private final TierRepository tierRepository;
 
     /**
      * @param intraId
@@ -129,7 +128,12 @@ public class UserService {
     public UserDetailResponseDto getUserDetail(String targetUserIntraId) {
         User targetUser = userFindService.findByIntraId(targetUserIntraId);
         String statusMessage = userFindService.getUserStatusMessage(targetUser);
-        Tier tier = rankFindService.findByUserIdAndSeasonId(targetUser.getId(), seasonFindService.findCurrentSeason(LocalDateTime.now()).getId()).getTier();
+        Tier tier;
+        try{
+            tier = rankFindService.findByUserIdAndSeasonId(targetUser.getId(), seasonFindService.findCurrentSeason(LocalDateTime.now()).getId()).getTier();
+        } catch (RankNotFoundException e) {
+            tier = tierRepository.findStartTier().orElseThrow(TierNotFoundException::new);
+        }
         return new UserDetailResponseDto(targetUser, statusMessage, tier);
     }
 
@@ -210,12 +214,12 @@ public class UserService {
     }
 
     public User getUser(Long userId) {
-        return userRepository.findById(userId).orElseThrow(() -> new UsernameNotFoundException("User" + userId));
+        return userRepository.findById(userId).orElseThrow(UserNotFoundException::new);
     }
 
     @Transactional
     public void deleteKakaoId(Long userId) {
-        User user = userRepository.findById(userId).orElseThrow(() -> new UserNotFoundException());
+        User user = userRepository.findById(userId).orElseThrow(UserNotFoundException::new);
         user.updateKakaoId(null);
     }
 
@@ -255,7 +259,7 @@ public class UserService {
 
     @Transactional
     public UserAttendanceResponseDto attendUser(Long userId) {
-        User user = userRepository.findById(userId).orElseThrow(() -> new UsernameNotFoundException("User" + userId));
+        User user = userRepository.findById(userId).orElseThrow(UserNotFoundException::new);
 
         int plus = userCoinChangeService.addAttendanceCoin(user);
 
@@ -264,49 +268,48 @@ public class UserService {
 
     @Transactional
     public UserNormalDetailResponseDto getUserNormalDetail(UserDto user) {
-        User loginUser = userRepository.findById(user.getId()).orElseThrow(() -> new UsernameNotFoundException("User" + user.getId()));
+        User loginUser = userRepository.findById(user.getId()).orElseThrow(UserNotFoundException::new);
         Boolean isAdmin = user.getRoleType() == RoleType.ADMIN;
         Boolean isAttended = coinHistoryService.hasAttendedToday(loginUser);
         Integer level = ExpLevelCalculator.getLevel(user.getTotalExp());
-        Tier tier = rankFindService.findByUserIdAndSeasonId(user.getId(), seasonFindService.findCurrentSeason(LocalDateTime.now()).getId()).getTier();
-        /* 티어가 존재하지 않는 일반 유저일때 : None, None 처리해서 보내기*/
-        if (tier == null) {
-            String tierName = "NONE";
-            String tierImageUri = "NONE";
-            return new UserNormalDetailResponseDto(loginUser.getIntraId(), loginUser.getImageUri(), isAdmin, isAttended, loginUser.getEdge(), tierName, tierImageUri, level);
+        Tier tier;
+        try {
+            tier = rankFindService.findByUserIdAndSeasonId(user.getId(), seasonFindService.findCurrentSeason(LocalDateTime.now()).getId()).getTier();
+        } catch (RankNotFoundException ex) {
+            // 카카오 유저나 Rank가 없는 유저
+            tier = tierRepository.findStartTier().orElseThrow(TierNotFoundException::new);
         }
-        String tierName = tier.getName();
-        String tierImageUri = tier.getImageUri();
-        return new UserNormalDetailResponseDto(user.getIntraId(), loginUser.getImageUri(), isAdmin, isAttended, loginUser.getEdge(), tierName, tierImageUri, level);
+        return new UserNormalDetailResponseDto(user.getIntraId(), loginUser.getImageUri(), isAdmin, isAttended, loginUser.getEdge(), tier.getName(), tier.getImageUri(), level);
     }
   
     @Transactional()
     public void updateTextColor(Long userId, UserTextColorDto textColorDto) {
         String textColor = textColorDto.getTextColor();
         Receipt receipt = receiptRepository.findById(textColorDto.getReceiptId()).orElseThrow(ReceiptNotFoundException::new);
-        User user = userRepository.findById(userId).orElseThrow(UserNotFoundException::new);
+        User loginUser = userRepository.findById(userId).orElseThrow(UserNotFoundException::new);
 
         if (!UserTextColorCheckService.check(textColor))
             throw new UserTextColorException();
-        checkOwner(user, receipt);
-        checkItemType(receipt, ItemType.TEXT_COLOR);
-        checkUseStatus(receipt);
 
-        user.updateTextColor(textColor);
+        itemService.checkItemType(receipt, ItemType.TEXT_COLOR);
+        itemService.checkItemOwner(loginUser, receipt);
+        itemService.checkItemStatus(receipt);
+
+        loginUser.updateTextColor(textColor);
         receipt.updateStatus(ItemStatus.USED);
     }
 
     @Transactional
     public String updateEdge(UserDto user, UserEdgeDto userEdgeDto) {
-        User userId = userRepository.findById(user.getId()).orElseThrow(UserNotFoundException::new);
+        User loginUser = userRepository.findById(user.getId()).orElseThrow(UserNotFoundException::new);
         EdgeType edgeType = EdgeType.getRandomEdgeType();
         Receipt receipt = receiptRepository.findById(userEdgeDto.getReceiptId()).orElseThrow(ReceiptNotFoundException::new);
 
-        checkOwner(userId, receipt);
-        checkItemType(receipt, ItemType.EDGE);
-        checkUseStatus(receipt);
+        itemService.checkItemType(receipt, ItemType.EDGE);
+        itemService.checkItemOwner(loginUser, receipt);
+        itemService.checkItemStatus(receipt);
 
-        userId.updateEdge(edgeType);
+        loginUser.updateEdge(edgeType);
         receipt.updateStatus(ItemStatus.USED);
 
         return edgeType.toString();
@@ -314,15 +317,15 @@ public class UserService {
 
     @Transactional
     public String updateBackground(UserDto user, UserBackgroundDto userBackgroundDto) {
-        User userId = userRepository.findById(user.getId()).orElseThrow(UserNotFoundException::new);
+        User loginUser = userRepository.findById(user.getId()).orElseThrow(UserNotFoundException::new);
         BackgroundType backgroundType = BackgroundType.getRandomBackgroundType();
         Receipt receipt = receiptRepository.findById(userBackgroundDto.getReceiptId()).orElseThrow(ReceiptNotFoundException::new);
 
-        checkOwner(userId, receipt);
-        checkItemType(receipt, ItemType.BACKGROUND);
-        checkUseStatus(receipt);
+        itemService.checkItemType(receipt, ItemType.BACKGROUND);
+        itemService.checkItemOwner(loginUser, receipt);
+        itemService.checkItemStatus(receipt);
 
-        userId.updateBackground(backgroundType);
+        loginUser.updateBackground(backgroundType);
         receipt.updateStatus(ItemStatus.USED);
 
         return backgroundType.toString();
@@ -330,12 +333,12 @@ public class UserService {
 
     @Transactional
     public void updateUserProfileImage(UserDto user, UserProfileImageRequestDto userProfileImageRequestDto, MultipartFile userImageFile) throws IOException {
-        User userId = userRepository.findById(user.getId()).orElseThrow(UserNotFoundException::new);
+        User loginUser = userRepository.findById(user.getId()).orElseThrow(UserNotFoundException::new);
         Receipt receipt = receiptRepository.findById(userProfileImageRequestDto.getReceiptId()).orElseThrow(ReceiptNotFoundException::new);
 
-        checkOwner(userId, receipt);
-        checkItemType(receipt, ItemType.PROFILE_IMAGE);
-        checkUseStatus(receipt);
+        itemService.checkItemType(receipt, ItemType.PROFILE_IMAGE);
+        itemService.checkItemOwner(loginUser, receipt);
+        itemService.checkItemStatus(receipt);
 
         if (userImageFile == null)
             throw new UserImageNullException();
@@ -345,24 +348,9 @@ public class UserService {
             throw new UserImageTypeException();
         }
 
-        UserImage userImage = userImageRepository.findTopByUserAndIsCurrentIsTrueOrderByIdDesc(userId).orElseThrow(null);
-        userImage.updateIsCurrent(false);
+        UserImage userImage = userImageRepository.findTopByUserAndIsCurrentIsTrueOrderByIdDesc(loginUser).orElseThrow(UserImageNullException::new);
+        userImage.updateIsCurrent();
         asyncNewUserImageUploader.update(user.getIntraId(), userImageFile);
         receipt.updateStatus(ItemStatus.USED);
-    }
-
-    public void checkOwner(User loginUser, Receipt receipt) {
-        if (!receipt.getOwnerIntraId().equals(loginUser.getIntraId()))
-            throw new ReceiptNotOwnerException();
-    }
-
-    public void checkItemType(Receipt receipt, ItemType itemType) {
-        if (!receipt.getItem().getType().equals(itemType))
-            throw new ItemTypeException();
-    }
-
-    public void checkUseStatus(Receipt receipt) {
-        if (!receipt.getStatus().equals(ItemStatus.BEFORE))
-            throw new ItemStatusException();
     }
 }
